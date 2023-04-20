@@ -1,11 +1,6 @@
-
-console.log(myPoints)
-console.log(typeof myPoints)
-
-mapboxgl.accessToken = 'pk.eyJ1IjoiY3dob25nIiwiYSI6IjAyYzIwYTJjYTVhMzUxZTVkMzdmYTQ2YzBmMTM0ZDAyIn0.owNd_Qa7Sw2neNJbK6zc1A';
+mapboxgl.accessToken = 'pk.eyJ1IjoiY2hsb3poZW4iLCJhIjoiY2xnNXFlMGkxMDF0YzNobjBzeDZ3dTRodyJ9.aEmIpsNVZeh27U2L1z7j_A';
 
 const NYC_COORDINATES = [-73.98795036092295, 40.72391715135848]
-
 const map = new mapboxgl.Map({
     container: 'map', // container ID
     style: 'mapbox://styles/mapbox/light-v11', // style URL
@@ -16,77 +11,84 @@ const map = new mapboxgl.Map({
 });
 
 map.on('load', function () {
-
+    /////////////////////////////////
     // add the point source and layer
-    // map.addSource('my-points', {
-    //     type: 'geojson',
-    //     data: myPoints
-    // })
+    map.addSource('nyc-streetseats', {
+        type: 'geojson',
+        data: './data/nyc-streetseats-2014-2019.geojson'
+    })
 
-    // map.addLayer({
-    //     id: 'circle-my-points',
-    //     type: 'circle',
-    //     source: 'my-points',
-    //     paint: {
-    //         'circle-color': '#3358ff',
-    //         'circle-radius': 8,
-    //         'circle-opacity': .6
-    //     }
-    // })
+    map.addLayer({
+        id: 'street seats',
+        type: 'circle',
+        source: 'nyc-streetseats',
+        paint: {
+            'circle-color': '#358EE3', //blue
+            'circle-radius': 4,
+            'circle-opacity': .8
+        }
+    })
+    /////////////////////////////////
+    // add the point source and layer
+    map.addSource('nyc-benchs', {
+        type: 'geojson',
+        data: './data/nyc-benchs-2022.geojson'
+    })
 
-    // // add the linestring source and layer
-    // map.addSource('my-lines', {
-    //     type: 'geojson',
-    //     data: myLines
-    // })
+    map.addLayer({
+        id: 'benchs',
+        type: 'circle',
+        source: 'nyc-benchs',
+        paint: {
+            'circle-color': '#35C3E3', //light blue
+            'circle-radius': 4,
+            'circle-opacity': .8
+        }
+    })
 
-    // map.addLayer({
-    //     id: 'line-my-lines',
-    //     type: 'line',
-    //     source: 'my-lines',
-    //     paint: {
-    //         'line-width': 4,
-    //         'line-color': '#f56289'
-    //     },
-    //     layout: {
-    //         'line-cap': 'round'
-    //     }
-    // })
+    /////////////////////////////////
+    // Add nyc park locations
+    map.addSource('nyc-parks', {
+        type: 'geojson',
+        data: './data/nyc-parks.geojson'
+    })
 
-    // // add the polygon source and layer
-    // map.addSource('my-polygons', {
-    //     type: 'geojson',
-    //     data: myPolygons
-    // })
+    map.addLayer({
+        id: 'parks',
+        type: 'fill',
+        source: 'nyc-parks',
+        paint: {
+            'fill-opacity': 0.8,
+            'fill-color': '#53C557' // green
 
-    // map.addLayer({
-    //     id: 'fill-my-polygons',
-    //     type: 'fill',
-    //     source: 'my-polygons',
-    //     paint: {
-    //         'fill-color': '#1bc440'
-    //     }
-    // })
+        }
+    }, 'road-label-simple')
 
-    // // add a line layer that uses the polygon source
-    // // demonstrate that two layers can use the same source
-    // map.addLayer({
-    //     id: 'line-my-polygons',
-    //     type: 'line',
-    //     source: 'my-polygons',
-    //     paint: {
-    //         'line-color': '#1b4223',
-    //         'line-width': 3,
-    //     },
-    //     layout: {
-    //         'line-cap': 'round'
-    //     }
-    // })
+    /////////////////////////////////
+    // Add nyc pedestrian plaza locations
+    map.addSource('nyc-pedestrianplazas', {
+        type: 'geojson',
+        data: './data/nyc-pedestrianplazas.geojson'
+    })
 
+    map.addLayer({
+        id: 'pedestrian plazas',
+        type: 'fill',
+        source: 'nyc-pedestrianplazas',
+        paint: {
+            'fill-opacity': 0.8,
+            'fill-color': '#3545E3' //blue
+
+        }
+    }, 'road-label-simple')
+
+    /////////////////////////////////
     // Add community farmer market locations
+
+    var farmermarketMarkers = []
     nyc_farmermarketData.forEach(function (market) {
         const popup = new mapboxgl.Popup({ offset: 25 })
-        .setHTML(`
+            .setHTML(`
             <table class="key-value-table">
                 <tr>
                 <td class="key">Market Name</td>
@@ -108,11 +110,10 @@ map.on('load', function () {
                 <td class="key">Season</td>
                 <td class="value">${market["Season Dates"]}</td>
                 </tr>
-                
             </table>
         `);
 
-        new mapboxgl.Marker({                    // create new marker
+        marker = new mapboxgl.Marker({                    // create new marker
             color: '#875AAF',
             scale: 0.35
         })
@@ -120,21 +121,11 @@ map.on('load', function () {
             .setPopup(popup)
             .addTo(map)
 
-        // if (hotspot_record.Location_T.includes("Outdoor")) {     // save markers according to location type
-        //     outdoor_markers.push(hotspot_marker)
-        // }
-        // if (hotspot_record.Location_T.includes("Indoor")) {
-        //     indoor_markers.push(hotspot_marker)
-        // }
-        // if (hotspot_record.Location_T == "Subway Station") {
-        //     subway_markers.push(hotspot_marker)
-        // }
-        // if (hotspot_record.Location_T == "Library") {
-        //     library_markers.push(hotspot_marker)
-        // }
+        farmermarketMarkers.push(marker)
 
     })
 
+    /////////////////////////////////
     // Add community garden locations
     map.addSource('nyc-greenthumb', {
         type: 'geojson',
@@ -142,29 +133,18 @@ map.on('load', function () {
     })
 
     map.addLayer({
-        id: 'fill-nyc-greenthumb',
+        id: 'community greenthumb gardens',
         type: 'fill',
         source: 'nyc-greenthumb',
         paint: {
             'fill-opacity': 0.8,
-            'fill-color': [
-                'match',
-                ['get', 'status'],
-                'Active', '#53C557', //green
-                'Active (Unlicensed)', '#53C5B5', //teal
-                'Not GreenThumb', '#6D69DE', //blue
-                'Closed (Construction)', '#EC8931', //orange
-                'Closed (Other)', '#988857', //brown1
-                'Inactive (No Group)', '#986A57', //brown2
-                'Inactive (Group Forming)', '#83A886', // light green
-                /* other */ '#ccc'
-            ]
+            'fill-color': '#D235E3' //pink
 
         }
     }, 'road-label-simple')
 
     // Pop ups for community garden locations
-    map.on('click', 'fill-nyc-greenthumb', (e) => {
+    map.on('click', 'community greenthumb gardens', (e) => {
 
         var hours = [[`M : `, e.features[0].properties.openhrsm],
         [`Tu: `, e.features[0].properties.openhrstu],
@@ -214,9 +194,59 @@ map.on('load', function () {
             .addTo(map);
     });
 
+    // https://docs.mapbox.com/mapbox-gl-js/example/toggle-layers/
+    map.on('idle', () => {
+        // If these two layers were not added to the map, abort
+        if (!map.getLayer('community greenthumb gardens') || !map.getLayer('parks')) {
+            return;
+        }
 
-    // demonstrate the layers that are already on the map
-    console.log(map.getStyle().layers)
+        // Enumerate ids of the layers.
+        const toggleableLayerIds = ['community greenthumb gardens', 'parks', 'pedestrian plazas','street seats', 'benchs'];
+
+        // Set up the corresponding toggle button for each layer.
+        for (const id of toggleableLayerIds) {
+            // Skip layers that already have a button set up.
+            if (document.getElementById(id)) {
+                continue;
+            }
+
+            // Create a link.
+            const link = document.createElement('a');
+            link.id = id;
+            link.href = '#';
+            link.textContent = id;
+            link.className = 'active';
+
+            // Show or hide layer when the toggle is clicked.
+            link.onclick = function (e) {
+                const clickedLayer = this.textContent;
+                e.preventDefault();
+                e.stopPropagation();
+
+                const visibility = map.getLayoutProperty(
+                    clickedLayer,
+                    'visibility'
+                );
+
+                // Toggle layer visibility by changing the layout object's visibility property.
+                if (visibility === 'visible') {
+                    map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+                    this.className = '';
+                } else {
+                    this.className = 'active';
+                    map.setLayoutProperty(
+                        clickedLayer,
+                        'visibility',
+                        'visible'
+                    );
+                }};
+
+            const layers = document.getElementById('menu');
+            layers.appendChild(link);
+        }
+    });
+
 
 })
 
