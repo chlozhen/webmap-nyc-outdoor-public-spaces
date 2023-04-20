@@ -1,0 +1,58 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Georgia, 'Times New Roman', Times, serif
+}
+
+#map {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.sidebar {
+  position: absolute;
+  width: 25%;
+  z-index: 10;
+  background: #dcddef;
+  padding: 20px;
+  margin-top: 15px;
+  margin-left: 15px;
+  border: 200px;
+  border-radius: 20px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 700;
+  color: rgb(1, 10, 29);
+  margin-bottom: 8px;
+}
+
+.description {
+   font-size: 14px;
+   margin-bottom: 10px;
+}
+
+/* location pop-up text table formatting */
+.key-value-table {
+  border-collapse: collapse;
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+.key-value-table td {
+  padding: 2px 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+.key-value-table td.key {
+  font-weight: bold;
+  color: #444;
+  background-color: #f2f2f2;
+}
+
+.key-value-table td.value {
+  color: #777;
+}

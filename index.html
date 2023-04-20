@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>NYC Community Markets And Gardens</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="title">
+            NYC Community Markets And Gardens
+        </div>
+        <div class="description">
+            Each marker on the map points to a farmers market - click the marker for more info.
+        </div>
+        <div class="description">
+            Each colored plot outlines a community garden - click the plot for more info.
+        </div>
+        <!-- <div class="description">
+            The color of the marker denotes the type of location. Click the buttons below to filter the markers.
+        </div>
+        <div class="filters">
+            <button id="outdoor" class="filterbtn">Outdoor</button>
+            <button id="indoor" class="filterbtn">Indoor</button>
+            <button id="subway" class="filterbtn">Subway</button>
+            <button id="library" class="filterbtn">Library</button>
+        </div>
+        <div class="description">
+            Hover over the button below and click a Borough to zoom in to.
+        </div> -->
+        <!-- <div class="dropdown">
+            <button class="dropbtn">Choose a Borough</button>
+            <div class="dropdown-content">
+                <a id="zoom-to-manh">Manhattan</a>
+                <a id="zoom-to-broo">Brooklyn</a>
+                <a id="zoom-to-quee">Queens</a>
+                <a id="zoom-to-bron">Bronx</a>
+                <a id="zoom-to-stat">Staten Island</a>
+            </div>
+        </div> -->
+
+        <div class="description">
+            <a href="https://nycopendata.socrata.com/Recreation/Parks-Properties/enfh-gkve">Data
+                Source</a>
+        </div>
+    </div>
+
+    <div id="map"></div>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+        integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+        <script src="data/my-points.js"></script>
+        <script src="data/my-lines.js"></script>
+        <script src="data/my-polygons.js"></script>
+        <script src="data/nyc-farmersmarkets.js"></script>
+        <script src="js/scripts.js"></script>
+</body>
+
+</html>
