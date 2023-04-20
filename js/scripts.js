@@ -30,15 +30,15 @@ map.on('load', function () {
     })
     /////////////////////////////////
     // add the point source and layer
-    map.addSource('nyc-benchs', {
+    map.addSource('nyc-benches', {
         type: 'geojson',
-        data: './data/nyc-benchs-2022.geojson'
+        data: './data/nyc-benches-2022.geojson'
     })
 
     map.addLayer({
-        id: 'benchs',
+        id: 'benches',
         type: 'circle',
-        source: 'nyc-benchs',
+        source: 'nyc-benches',
         paint: {
             'circle-color': '#35C3E3', //light blue
             'circle-radius': 4,
@@ -202,7 +202,7 @@ map.on('load', function () {
         }
 
         // Enumerate ids of the layers.
-        const toggleableLayerIds = ['community greenthumb gardens', 'parks', 'pedestrian plazas','street seats', 'benchs'];
+        const toggleableLayerIds = ['community greenthumb gardens', 'parks', 'pedestrian plazas','street seats', 'benches'];
 
         // Set up the corresponding toggle button for each layer.
         for (const id of toggleableLayerIds) {
