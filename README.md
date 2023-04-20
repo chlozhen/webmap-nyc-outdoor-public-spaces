@@ -1,7 +1,7 @@
 # Web Map: NYC Outdoor Guide
 ### NYU GIS Spring 2023 Week 4: Web Maps using geojson data
 
-Webmap: ..
+Webmap: https://chlozhen.github.io/webmap-nyc-outdoor-public-spaces/
 
 Data: 6 Datasets from NYC Open Data
 
