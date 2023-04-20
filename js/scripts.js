@@ -23,7 +23,7 @@ map.on('load', function () {
         type: 'circle',
         source: 'nyc-streetseats',
         paint: {
-            'circle-color': '#358EE3', //blue
+            'circle-color': '#3541E3', //blue
             'circle-radius': 4,
             'circle-opacity': .8
         }
@@ -77,7 +77,7 @@ map.on('load', function () {
         source: 'nyc-pedestrianplazas',
         paint: {
             'fill-opacity': 0.8,
-            'fill-color': '#3545E3' //blue
+            'fill-color': '#DC35E3' //pink
 
         }
     }, 'road-label-simple')
@@ -115,7 +115,7 @@ map.on('load', function () {
 
         marker = new mapboxgl.Marker({                    // create new marker
             color: '#875AAF',
-            scale: 0.35
+            scale: 0.5
         })
             .setLngLat([parseFloat(market.Longitude), parseFloat(market.Latitude)])
             .setPopup(popup)
@@ -138,7 +138,7 @@ map.on('load', function () {
         source: 'nyc-greenthumb',
         paint: {
             'fill-opacity': 0.8,
-            'fill-color': '#D235E3' //pink
+            'fill-color': '#8D35E3' //purple
 
         }
     }, 'road-label-simple')
@@ -173,20 +173,20 @@ map.on('load', function () {
             .setHTML(`
                     <table class="key-value-table">
                         <tr>
-                        <td class="key">Garden Name</td>
-                        <td class="value">${e.features[0].properties.gardenname}</td>
+                            <td class="key">Garden Name</td>
+                            <td class="value">${e.features[0].properties.gardenname}</td>
                         </tr>
                         <tr>
-                        <td class="key">Park ID</td>
-                        <td class="value">${e.features[0].properties.parksid}</td>
+                            <td class="key">Park ID</td>
+                            <td class="value">${e.features[0].properties.parksid}</td>
                         </tr>
                         <tr>
-                        <td class="key">Status</td>
-                        <td class="value">${e.features[0].properties.status}</td>
+                            <td class="key">Status</td>
+                            <td class="value">${e.features[0].properties.status}</td>
                         </tr>
                         <tr>
-                        <td class="key">Hours</td>
-                        <td class="value">${hourshtml}</td>
+                            <td class="key">Hours</td>
+                            <td class="value">${hourshtml}</td>
                         </tr>
                         
                     </table>
@@ -195,58 +195,54 @@ map.on('load', function () {
     });
 
     // https://docs.mapbox.com/mapbox-gl-js/example/toggle-layers/
-    map.on('idle', () => {
-        // If these two layers were not added to the map, abort
-        if (!map.getLayer('community greenthumb gardens') || !map.getLayer('parks')) {
-            return;
+
+});
+
+map.on('idle', () => {
+
+    // Enumerate ids of the layers.
+    const toggleableLayerIds = ['parks', 'community greenthumb gardens', 'pedestrian plazas', 'street seats', 'benches'];
+
+    // Set up the corresponding toggle button for each layer.
+    for (const id of toggleableLayerIds) {
+        // Skip layers that already have a button set up.
+        if (document.getElementById(id)) {
+            continue;
         }
 
-        // Enumerate ids of the layers.
-        const toggleableLayerIds = ['community greenthumb gardens', 'parks', 'pedestrian plazas','street seats', 'benches'];
+        // Create a link.
+        const link = document.createElement('a');
+        link.id = id;
+        link.href = '#';
+        link.textContent = id;
+        link.className = 'active';
 
-        // Set up the corresponding toggle button for each layer.
-        for (const id of toggleableLayerIds) {
-            // Skip layers that already have a button set up.
-            if (document.getElementById(id)) {
-                continue;
-            }
+        // Show or hide layer when the toggle is clicked.
+        link.onclick = function (e) {
+            const clickedLayer = this.textContent;
+            e.preventDefault();
+            e.stopPropagation();
 
-            // Create a link.
-            const link = document.createElement('a');
-            link.id = id;
-            link.href = '#';
-            link.textContent = id;
-            link.className = 'active';
+            const visibility = map.getLayoutProperty(
+                clickedLayer,
+                'visibility'
+            );
 
-            // Show or hide layer when the toggle is clicked.
-            link.onclick = function (e) {
-                const clickedLayer = this.textContent;
-                e.preventDefault();
-                e.stopPropagation();
-
-                const visibility = map.getLayoutProperty(
+            // Toggle layer visibility by changing the layout object's visibility property.
+            if (visibility === 'visible') {
+                map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+                this.className = '';
+            } else {
+                this.className = 'active';
+                map.setLayoutProperty(
                     clickedLayer,
-                    'visibility'
+                    'visibility',
+                    'visible'
                 );
+            }
+        };
 
-                // Toggle layer visibility by changing the layout object's visibility property.
-                if (visibility === 'visible') {
-                    map.setLayoutProperty(clickedLayer, 'visibility', 'none');
-                    this.className = '';
-                } else {
-                    this.className = 'active';
-                    map.setLayoutProperty(
-                        clickedLayer,
-                        'visibility',
-                        'visible'
-                    );
-                }};
-
-            const layers = document.getElementById('menu');
-            layers.appendChild(link);
-        }
-    });
-
-
-})
-
+        const layers = document.getElementById('menu');
+        layers.appendChild(link);
+    }
+});

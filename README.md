@@ -5,7 +5,7 @@ Webmap: ..
 
 Data: 6 Datasets from NYC Open Data
 
-Note data was used at the time of download on April 18th, 2023 - data may have been updated.
+NOTE: data was used at the time of download on April 18th, 2023 - data may have been updated.
 * [Farmers Market Data](https://data.cityofnewyork.us/dataset/DOHMH-Farmers-Markets/8vwk-6iz2)
 * [GreenThumb Garden Info](https://data.cityofnewyork.us/dataset/GreenThumb-Garden-Info/p78i-pat6)
 * [NYC Parks](https://nycopendata.socrata.com/Recreation/Parks-Properties/enfh-gkve)
@@ -17,7 +17,7 @@ For more NYC data, check out [NYC DOT Data Feeds](https://www.nyc.gov/html/dot/h
 
 Code:
 * Adapted from Chris Whong's [tutorial](https://github.com/chriswhong/class-four-map/tree/main/data) for week 4
-* Using [Mapbox API](https://docs.mapbox.com/mapbox-gl-js/guides/) base and examples
+* Using [Mapbox API](https://docs.mapbox.com/mapbox-gl-js/guides/) base and examples:
   * https://docs.mapbox.com/mapbox-gl-js/example/geojson-polygon/
   * https://docs.mapbox.com/mapbox-gl-js/example/toggle-layers/
 * Other references/tools:
