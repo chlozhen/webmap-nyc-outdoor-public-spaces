@@ -1,7 +1,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: Georgia, 'Times New Roman', Times, serif
+  font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 #map {
@@ -15,7 +15,7 @@ body {
   position: absolute;
   width: 25%;
   z-index: 10;
-  background: #dcddef;
+  background: #6869a3;
   padding: 20px;
   margin-top: 15px;
   margin-left: 15px;
@@ -26,16 +26,23 @@ body {
 .title {
   font-size: 20px;
   font-weight: 700;
-  color: rgb(1, 10, 29);
+  color: #d5eafb;
   margin-bottom: 8px;
 }
 
 .description {
   font-size: 14px;
   margin-bottom: 10px;
+  color: #eef3fb;
 }
 
-/* location pop-up text table formatting */
+/*pop up description table*/
+.mapboxgl-popup-content {
+  display: inline-block;
+  background-color:#e0e9f6;
+}
+
+/* Table Design for location pop-up text */
 .key-value-table {
   border-collapse: collapse;
   font-size: 12px;
@@ -44,23 +51,23 @@ body {
 
 .key-value-table td {
   padding: 2px 8px;
-  border-bottom: 1px solid #ddd;
+  border: 1px solid#ffffff;
+  background-color:#eef3fb;
 }
 
 .key-value-table td.key {
   font-weight: bold;
   color: #444;
-  background-color: #f2f2f2;
+  background-color: #d5eafb;
 }
 
 .key-value-table td.value {
-  color: #777;
+  color: #0a0808;
 }
 
-
-
+/* Design for Toggle Buttons */
 #menu {
-  background: #fff;
+  background: #d5eafb;
   position: absolute;
   z-index: 1;
   top: 10px;
@@ -88,15 +95,15 @@ body {
 }
 
 #menu a:hover {
-  background-color: #f8f8f8;
+  background-color: #eef3fb;
   color: #404040;
 }
 
 #menu a.active {
-  background-color: #3887be;
-  color: #ffffff;
+  background-color: #6869a3;
+  color: #eef3fb;
 }
 
 #menu a.active:hover {
-  background: #3074a4;
+  background: #3e407c;
 }

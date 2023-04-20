@@ -64,6 +64,35 @@ map.on('load', function () {
         }
     }, 'road-label-simple')
 
+    map.on('click', 'parks', (e) => {
+        new mapboxgl.Popup()
+            .setLngLat(e.lngLat)
+            // .setHTML(``)
+            .setHTML(`
+                    <table class="key-value-table">
+                        <tr>
+                            <td class="key">Name</td>
+                            <td class="value">${e.features[0].properties.name311}</td>
+                        </tr>
+                        <tr>
+                            <td class="key">Location</td>
+                            <td class="value">${e.features[0].properties.location}</td>
+                        </tr>
+                        <tr>
+                            <td class="key">Acres</td>
+                            <td class="value">${e.features[0].properties.acres}</td>
+                        </tr>
+            
+                        <tr>
+                            <td class="key">Jurisdiction</td>
+                            <td class="value">${e.features[0].properties.jurisdiction}</td>
+                        </tr>
+                        
+                    </table>
+                    `)
+            .addTo(map);
+    });
+
     /////////////////////////////////
     // Add nyc pedestrian plaza locations
     map.addSource('nyc-pedestrianplazas', {
@@ -84,7 +113,6 @@ map.on('load', function () {
 
     /////////////////////////////////
     // Add community farmer market locations
-
     var farmermarketMarkers = []
     nyc_farmermarketData.forEach(function (market) {
         const popup = new mapboxgl.Popup({ offset: 25 })
@@ -193,11 +221,11 @@ map.on('load', function () {
                     `)
             .addTo(map);
     });
-
-    // https://docs.mapbox.com/mapbox-gl-js/example/toggle-layers/
-
 });
 
+
+// Event handling: toggling layers
+// ref: https://docs.mapbox.com/mapbox-gl-js/example/toggle-layers/
 map.on('idle', () => {
 
     // Enumerate ids of the layers.
