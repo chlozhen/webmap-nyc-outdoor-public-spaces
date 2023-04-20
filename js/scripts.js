@@ -5,10 +5,12 @@ const map = new mapboxgl.Map({
     container: 'map', // container ID
     style: 'mapbox://styles/mapbox/light-v11', // style URL
     center: NYC_COORDINATES, // starting position [lng, lat]
-    zoom: 14, // starting zoom
+    zoom: 13, // starting zoom
     bearing: 0,
     pitch: 0
 });
+
+var farmermarketMarkers = []
 
 map.on('load', function () {
     /////////////////////////////////
@@ -16,7 +18,7 @@ map.on('load', function () {
     map.addSource('nyc-streetseats', {
         type: 'geojson',
         data: './data/nyc-streetseats-2014-2019.geojson'
-    })
+    });
 
     map.addLayer({
         id: 'street seats',
@@ -24,10 +26,18 @@ map.on('load', function () {
         source: 'nyc-streetseats',
         paint: {
             'circle-color': '#3541E3', //blue
-            'circle-radius': 4,
+            'circle-radius': 5,
             'circle-opacity': .8
         }
-    })
+    });
+
+    map.on('click', 'street seats', (e) => {
+        new mapboxgl.Popup()
+            .setLngLat(e.lngLat)
+            .setText('street seat')
+            .addTo(map);
+    });
+
     /////////////////////////////////
     // add the point source and layer
     map.addSource('nyc-benches', {
@@ -41,10 +51,17 @@ map.on('load', function () {
         source: 'nyc-benches',
         paint: {
             'circle-color': '#35C3E3', //light blue
-            'circle-radius': 4,
+            'circle-radius': 5,
             'circle-opacity': .8
         }
     })
+
+    map.on('click', 'benches', (e) => {
+        new mapboxgl.Popup()
+            .setLngLat(e.lngLat)
+            .setText('bench')
+            .addTo(map);
+    });
 
     /////////////////////////////////
     // Add nyc park locations
@@ -67,7 +84,6 @@ map.on('load', function () {
     map.on('click', 'parks', (e) => {
         new mapboxgl.Popup()
             .setLngLat(e.lngLat)
-            // .setHTML(``)
             .setHTML(`
                     <table class="key-value-table">
                         <tr>
@@ -82,12 +98,10 @@ map.on('load', function () {
                             <td class="key">Acres</td>
                             <td class="value">${e.features[0].properties.acres}</td>
                         </tr>
-            
                         <tr>
                             <td class="key">Jurisdiction</td>
                             <td class="value">${e.features[0].properties.jurisdiction}</td>
                         </tr>
-                        
                     </table>
                     `)
             .addTo(map);
@@ -111,47 +125,27 @@ map.on('load', function () {
         }
     }, 'road-label-simple')
 
-    /////////////////////////////////
-    // Add community farmer market locations
-    var farmermarketMarkers = []
-    nyc_farmermarketData.forEach(function (market) {
-        const popup = new mapboxgl.Popup({ offset: 25 })
+    map.on('click', 'pedestrian plazas', (e) => {
+        new mapboxgl.Popup()
+            .setLngLat(e.lngLat)
             .setHTML(`
-            <table class="key-value-table">
-                <tr>
-                <td class="key">Market Name</td>
-                <td class="value">${market["Market Name"]}</td>
-                </tr>
-                <tr>
-                <td class="key">Address</td>
-                <td class="value">${market["Street Address"]}</td>
-                </tr>
-                <tr>
-                <td class="key">Hours</td>
-                <td class="value">${market["Days of Operation"]}: ${market["Hours of Operations"]}</td>
-                </tr>
-                <tr>
-                <td class="key">Open Year-Round</td>
-                <td class="value">${market["Open Year-Round"]}</td>
-                </tr>
-                <tr>
-                <td class="key">Season</td>
-                <td class="value">${market["Season Dates"]}</td>
-                </tr>
-            </table>
-        `);
-
-        marker = new mapboxgl.Marker({                    // create new marker
-            color: '#875AAF',
-            scale: 0.5
-        })
-            .setLngLat([parseFloat(market.Longitude), parseFloat(market.Latitude)])
-            .setPopup(popup)
-            .addTo(map)
-
-        farmermarketMarkers.push(marker)
-
-    })
+                    <table class="key-value-table">
+                        <tr>
+                            <td class="key">Name</td>
+                            <td class="value">${e.features[0].properties.plazaname}</td>
+                        </tr>
+                        <tr>
+                            <td class="key">Location</td>
+                            <td class="value">${e.features[0].properties.onstreet}</td>
+                        </tr>
+                        <tr>
+                            <td class="key">Partner</td>
+                            <td class="value">${e.features[0].properties.partner}</td>
+                        </tr>
+                    </table>
+                    `)
+            .addTo(map);
+    });
 
     /////////////////////////////////
     // Add community garden locations
@@ -221,10 +215,51 @@ map.on('load', function () {
                     `)
             .addTo(map);
     });
+
+    /////////////////////////////////
+    // Add community farmer market locations
+    nyc_farmermarketData.forEach(function (market) {
+        const popup = new mapboxgl.Popup({ offset: 25 })
+            .setHTML(`
+            <table class="key-value-table">
+                <tr>
+                <td class="key">Market Name</td>
+                <td class="value">${market["Market Name"]}</td>
+                </tr>
+                <tr>
+                <td class="key">Address</td>
+                <td class="value">${market["Street Address"]}</td>
+                </tr>
+                <tr>
+                <td class="key">Hours</td>
+                <td class="value">${market["Days of Operation"]}: ${market["Hours of Operations"]}</td>
+                </tr>
+                <tr>
+                <td class="key">Open Year-Round</td>
+                <td class="value">${market["Open Year-Round"]}</td>
+                </tr>
+                <tr>
+                <td class="key">Season</td>
+                <td class="value">${market["Season Dates"]}</td>
+                </tr>
+            </table>
+        `);
+
+        marker = new mapboxgl.Marker({                    // create new marker
+            color: '#875AAF',
+            scale: 0.5
+        })
+            .setLngLat([parseFloat(market.Longitude), parseFloat(market.Latitude)])
+            .setPopup(popup)
+            .addTo(map)
+
+        farmermarketMarkers.push(marker)
+
+    });
 });
 
 
-// Event handling: toggling layers
+// Event handling: toggling layers and points
 // ref: https://docs.mapbox.com/mapbox-gl-js/example/toggle-layers/
 map.on('idle', () => {
 
@@ -274,3 +309,46 @@ map.on('idle', () => {
         layers.appendChild(link);
     }
 });
+
+
+// Functions for filtering markers
+function remove_marker(marker_list) {
+    for (var i = 0; i < marker_list.length; i++) {
+        marker_list[i].remove()
+    }
+}
+function add_marker(marker_list) {
+    for (var i = 0; i < marker_list.length; i++) {
+        marker_list[i].addTo(map)
+    }
+}
+
+function filter_markers(link, id, activeClass, markerlist){
+    link.onclick = function (e) {
+        console.log(e.textContent)
+        var ele = document.getElementById(id)
+        console.log(ele.className)
+        if (ele.className.includes(activeClass)) {
+            ele.className = ""
+            remove_marker(markerlist)
+        }
+        else {
+            ele.className = activeClass
+            add_marker(markerlist)
+        }
+    }
+}
+
+
+// Event handling: Toggling Markers
+var farmer_id = "farmers market"
+const link = document.createElement('a');
+link.id = farmer_id;
+link.href = '#';
+link.textContent = farmer_id;
+link.className = 'active';
+
+const layers = document.getElementById('menu');
+layers.appendChild(link);
+
+filter_markers(link, farmer_id, link.className, farmermarketMarkers)
